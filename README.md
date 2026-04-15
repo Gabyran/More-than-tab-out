@@ -80,6 +80,15 @@ git clone https://github.com/Gabyran/More-than-tab-out.git
 
 ---
 
+## Contributors / 贡献者
+
+| | Who | Role |
+|---|-----|------|
+| 🎨 | [Zara](https://x.com/zarazhangrui) ([@zarazhangrui](https://github.com/zarazhangrui)) | Original creator of [Tab Out](https://github.com/zarazhangrui/tab-out) |
+| ✨ | [Gabi](https://github.com/Gabyran) ([@Gabyran](https://github.com/Gabyran)) | Wallpaper system, quick links, subdomain merging, enhancements |
+
+---
+
 ## Credits / 致谢
 
 - **[Tab Out](https://github.com/zarazhangrui/tab-out)** by [Zara](https://x.com/zarazhangrui) — the original extension with tab management, domain grouping, and the beautiful warm design
