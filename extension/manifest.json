@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "More Than Tab Out",
+  "version": "1.0.0",
+  "description": "Enhanced new tab page with wallpapers, quick links, and subdomain merging. Based on Tab Out by Zara.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ]
+}
