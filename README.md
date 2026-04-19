@@ -55,6 +55,8 @@ In addition to all original Tab Out features, this fork adds:
 
 ## Install / 安装
 
+### Chrome
+
 ```bash
 git clone https://github.com/Gabyran/More-than-tab-out.git
 ```
@@ -65,13 +67,29 @@ git clone https://github.com/Gabyran/More-than-tab-out.git
 4. Select the `extension/` folder inside the cloned repo
 5. Open a new tab — you're done!
 
+### Microsoft Edge
+
+```bash
+git clone https://github.com/Gabyran/More-than-tab-out.git
+```
+
+1. Open `edge://extensions`
+2. Enable **Developer mode** (left sidebar toggle)
+3. Click **Load unpacked**
+4. Select the `extension/` folder inside the cloned repo
+5. Open a new tab — done!
+
+> 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 页面下载 `more-than-tab-out-v*.zip`，解压后加载。
+>
+> You can also download the zip from [Releases](https://github.com/Gabyran/More-than-tab-out/releases) and load the unpacked folder.
+
 ---
 
 ## Tech Stack / 技术栈
 
 | Component | Tech |
 |-----------|------|
-| Extension | Chrome Manifest V3 |
+| Extension | Chrome / Edge Manifest V3 |
 | Storage | `chrome.storage.local` |
 | Wallpaper | CSS `background-image` + Canvas color extraction |
 | Sound | Web Audio API (synthesized) |

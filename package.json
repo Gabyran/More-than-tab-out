@@ -1,0 +1,9 @@
+{
+  "name": "more-than-tab-out",
+  "version": "1.0.0",
+  "description": "Enhanced new tab page with wallpapers, quick links, and subdomain merging.",
+  "scripts": {
+    "package": "zip -r more-than-tab-out-v$npm_package_version.zip extension/ -x 'extension/.DS_Store'"
+  },
+  "license": "MIT"
+}
