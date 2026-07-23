@@ -472,6 +472,104 @@ async function updateQuickLink(id, name, url) {
 }
 
 /* ----------------------------------------------------------------
+   BOOKMARK IMPORT — read Chrome bookmarks tree
+   ---------------------------------------------------------------- */
+
+/**
+ * getBookmarks()
+ *
+ * Reads the entire Chrome bookmarks tree via chrome.bookmarks API.
+ * Returns a flat array of { title, url } for all bookmark URLs.
+ */
+async function getBookmarks() {
+  if (!chrome.bookmarks) return [];
+  const tree = await chrome.bookmarks.getTree();
+  const results = [];
+
+  function walk(nodes) {
+    for (const node of nodes) {
+      if (node.url) {
+        results.push({ title: node.title || node.url, url: node.url });
+      }
+      if (node.children) walk(node.children);
+    }
+  }
+  walk(tree);
+  return results;
+}
+
+/**
+ * importBookmarksToQuickLinks()
+ *
+ * Reads all Chrome bookmarks, filters out duplicates (both within
+ * bookmarks and against existing quick links), and adds them as
+ * new quick links. Returns { added, skipped, total }.
+ */
+async function importBookmarksToQuickLinks() {
+  const bookmarks = await getBookmarks();
+  const existingLinks = await getQuickLinks();
+  const existingUrls = new Set(existingLinks.map(l => normalizeUrl(l.url)));
+
+  const seenUrls = new Set();
+  let added = 0;
+  let skipped = 0;
+  const newLinks = [...existingLinks];
+
+  for (const bm of bookmarks) {
+    const url = bm.url;
+    if (!url || url.startsWith('javascript:') || url.startsWith('chrome://')) {
+      skipped++;
+      continue;
+    }
+
+    const normalized = normalizeUrl(url);
+    if (existingUrls.has(normalized) || seenUrls.has(normalized)) {
+      skipped++;
+      continue;
+    }
+
+    seenUrls.add(normalized);
+    let name = bm.title || '';
+
+    // Clean up bookmark title: strip domain suffixes
+    try {
+      const hostname = new URL(url).hostname.replace(/^www\./, '');
+      if (!name || name === url) {
+        name = friendlyDomain(hostname);
+      } else {
+        // Strip trailing " - Domain" or " | Domain" patterns
+        name = cleanTitle(name, hostname);
+      }
+    } catch {
+      if (!name) name = url;
+    }
+
+    newLinks.push({
+      id: Date.now().toString() + '-' + added,
+      name: name.slice(0, 40),
+      url: url,
+    });
+    added++;
+  }
+
+  if (added > 0) {
+    await setQuickLinks(newLinks);
+  }
+
+  return { added, skipped, total: bookmarks.length };
+}
+
+/** Normalize URL for dedup comparison (strip trailing slash, lowercase) */
+function normalizeUrl(url) {
+  try {
+    const u = new URL(url);
+    return (u.origin + u.pathname).replace(/\/$/, '').toLowerCase() + u.search.toLowerCase();
+  } catch {
+    return url.toLowerCase();
+  }
+}
+
+/* ----------------------------------------------------------------
    UI HELPERS
    ---------------------------------------------------------------- */
 
@@ -1747,6 +1845,9 @@ async function renderQuickLinks() {
     ${linksHtml}
     <button class="quick-link-add" data-action="add-quick-link" title="Add quick link">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+    </button>
+    <button class="quick-link-add" data-action="import-bookmarks" title="Import Chrome bookmarks" style="margin-left:4px">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.014.226-.022.338-.022h4.578c.112 0 .226.008.338.022m-4.578 0a3.75 3.75 0 0 0-1.097.464L1.5 11.25m4.466-1.474a3.75 3.75 0 0 1 3.372-.022m-3.372.022L8.25 11.25m0 0L5.778 13.5m2.472-2.25 2.472 2.25m0 0L13.5 11.25m-2.472 2.25 2.472 2.25m0 0L16.5 11.25m-2.972 2.25L16.5 13.5m0 0V9.75m0 0L13.5 11.25m3 0L19.5 9.75M5.778 13.5h2.472m0 0h2.472m0 0h2.972m-2.972 0h2.972m0 0c.112-.014.226-.022.338-.022h4.578c.112 0 .226.008.338.022" /></svg>
     </button>`;
 }
 
@@ -1924,6 +2025,25 @@ document.addEventListener('click', async (e) => {
   await addQuickLink(name, url);
   await renderQuickLinks();
   showToast(`Added ${name}`);
+});
+
+// Import Chrome bookmarks as quick links
+document.addEventListener('click', async (e) => {
+  if (!e.target.closest('[data-action="import-bookmarks"]')) return;
+
+  if (!chrome.bookmarks) {
+    showToast('Bookmarks API not available');
+    return;
+  }
+
+  const result = await importBookmarksToQuickLinks();
+
+  if (result.added > 0) {
+    await renderQuickLinks();
+    showToast(`Imported ${result.added} bookmarks (${result.skipped} duplicates skipped)`);
+  } else {
+    showToast(`No new bookmarks to import (${result.skipped} duplicates)`);
+  }
 });
 
 // Edit quick link (via pencil icon)
