@@ -295,7 +295,7 @@ async function dismissSavedTab(id) {
    null = no wallpaper (default paper background)
    ---------------------------------------------------------------- */
 
-const DEFAULT_WALLPAPER = { type: 'preset', value: PRESET_WALLPAPERS[1].url };
+const DEFAULT_WALLPAPER = null;
 
 /** Get current wallpaper config */
 async function getWallpaper() {
@@ -2122,7 +2122,12 @@ function initSettingsButton() {
    ---------------------------------------------------------------- */
 
 async function initWallpaper() {
-  const config = await getWallpaper();
+  let config = await getWallpaper();
+  // First run: default to Mountain preset
+  if (!config) {
+    config = { type: 'preset', value: PRESET_WALLPAPERS[1].url };
+    await chrome.storage.local.set({ wallpaper: config });
+  }
   await applyWallpaper(config);
 }
 
