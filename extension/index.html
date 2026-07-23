@@ -36,8 +36,21 @@
     </div>
   </header>
 
-  <!-- Wallpaper settings panel (outside header for proper z-index stacking) -->
-  <div class="wallpaper-panel" id="wallpaperPanel" style="display:none"></div>
+  <!-- Settings overlay + right-side slide-out drawer -->
+  <div class="settings-overlay" id="settingsOverlay"></div>
+  <div class="settings-drawer" id="settingsDrawer">
+    <div class="drawer-header">
+      <h3>Settings</h3>
+      <button class="drawer-close" data-action="close-settings-drawer">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+      </button>
+    </div>
+    <div class="drawer-nav">
+      <button class="drawer-nav-item active" data-nav="wallpaper">Wallpaper</button>
+      <button class="drawer-nav-item" data-nav="links">Quick Links</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
 
   <!-- ================================================================
        QUICK LINKS BAR — common website shortcuts
