@@ -1609,3 +1609,71 @@ body.has-wallpaper .quick-link-name {
   color: var(--accent-amber);
   background: rgba(200, 113, 58, 0.05);
 }
+
+/* Quick Links management in settings panel */
+.panel-links-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.panel-link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.panel-link-item:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.panel-link-favicon {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.panel-link-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--near-black, #333);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-link-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted, #999);
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-link-edit:hover {
+  color: var(--accent-amber, #c8713a);
+  background: rgba(200,113,58,0.08);
+}
+
+.panel-link-edit svg {
+  width: 14px;
+  height: 14px;
+}
+
+.panel-links-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.panel-links-actions .panel-btn {
+  flex: 1;
+  text-align: center;
+}

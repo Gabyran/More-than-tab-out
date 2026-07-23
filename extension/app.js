@@ -1843,12 +1843,7 @@ async function renderQuickLinks() {
 
   container.innerHTML = `
     ${linksHtml}
-    <button class="quick-link-add" data-action="add-quick-link" title="Add quick link">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-    </button>
-    <button class="quick-link-add" data-action="import-bookmarks" title="Import Chrome bookmarks" style="margin-left:4px">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.014.226-.022.338-.022h4.578c.112 0 .226.008.338.022m-4.578 0a3.75 3.75 0 0 0-1.097.464L1.5 11.25m4.466-1.474a3.75 3.75 0 0 1 3.372-.022m-3.372.022L8.25 11.25m0 0L5.778 13.5m2.472-2.25 2.472 2.25m0 0L13.5 11.25m-2.472 2.25 2.472 2.25m0 0L16.5 11.25m-2.972 2.25L16.5 13.5m0 0V9.75m0 0L13.5 11.25m3 0L19.5 9.75M5.778 13.5h2.472m0 0h2.472m0 0h2.972m-2.972 0h2.972m0 0c.112-.014.226-.022.338-.022h4.578c.112 0 .226.008.338.022" /></svg>
-    </button>`;
+`;
 }
 
 
@@ -1871,7 +1866,7 @@ const PRESET_WALLPAPERS = [
 
 let wallpaperPanelOpen = false;
 
-/** Toggle wallpaper settings panel */
+/** Toggle settings panel */
 async function toggleWallpaperPanel() {
   const panel = document.getElementById('wallpaperPanel');
   const btn = document.getElementById('settingsBtn');
@@ -1887,7 +1882,7 @@ async function toggleWallpaperPanel() {
   panel.style.display = wallpaperPanelOpen ? 'block' : 'none';
 }
 
-/** Render wallpaper settings panel */
+/** Render settings panel (wallpaper + quick links management) */
 async function renderWallpaperPanel() {
   const panel = document.getElementById('wallpaperPanel');
   if (!panel) return;
@@ -1913,13 +1908,30 @@ async function renderWallpaperPanel() {
       </div>`;
   }).join('');
 
+  // Render quick links management section
+  const links = await getQuickLinks();
+  const linksHtml = links.map(link => {
+    const faviconUrl = (() => {
+      try { return `https://www.google.com/s2/favicons?domain=${new URL(link.url).hostname}&sz=16`; }
+      catch { return ''; }
+    })();
+    return `
+      <div class="panel-link-item" data-link-id="${link.id}">
+        <img src="${faviconUrl}" alt="" class="panel-link-favicon" onerror="this.style.display='none'">
+        <span class="panel-link-name">${link.name}</span>
+        <button class="panel-link-edit" data-action="edit-quick-link" data-link-id="${link.id}" title="Edit / Delete">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+        </button>
+      </div>`;
+  }).join('');
+
   panel.innerHTML = `
     <div class="panel-header">
-      <h3>Wallpaper</h3>
+      <h3>Settings</h3>
       <button class="panel-close" data-action="close-wallpaper-panel">✕</button>
     </div>
     <div class="panel-section">
-      <label class="panel-label">Presets</label>
+      <label class="panel-label">Wallpaper Presets</label>
       <div class="wallpaper-grid">${presetsHtml}</div>
     </div>
     <div class="panel-section">
@@ -1936,6 +1948,14 @@ async function renderWallpaperPanel() {
         <input type="file" accept="image/*" id="wallpaperFileInput" style="display:none">
         Choose file…
       </label>
+    </div>
+    <div class="panel-section">
+      <label class="panel-label">Quick Links</label>
+      <div class="panel-links-list">${linksHtml}</div>
+      <div class="panel-links-actions">
+        <button class="panel-btn" data-action="add-quick-link">+ Add link</button>
+        <button class="panel-btn" data-action="import-bookmarks">Import bookmarks</button>
+      </div>
     </div>`;
 }
 
@@ -2024,6 +2044,7 @@ document.addEventListener('click', async (e) => {
 
   await addQuickLink(name, url);
   await renderQuickLinks();
+  if (wallpaperPanelOpen) await renderWallpaperPanel();
   showToast(`Added ${name}`);
 });
 
@@ -2040,6 +2061,7 @@ document.addEventListener('click', async (e) => {
 
   if (result.added > 0) {
     await renderQuickLinks();
+    if (wallpaperPanelOpen) await renderWallpaperPanel();
     showToast(`Imported ${result.added} bookmarks (${result.skipped} duplicates skipped)`);
   } else {
     showToast(`No new bookmarks to import (${result.skipped} duplicates)`);
@@ -2063,6 +2085,7 @@ document.addEventListener('click', async (e) => {
   if (action === '2') {
     await removeQuickLink(linkId);
     await renderQuickLinks();
+    if (wallpaperPanelOpen) await renderWallpaperPanel();
     showToast(`Removed ${currentName}`);
   } else if (action === '1') {
     const name = prompt('Site name:', currentName);
@@ -2072,6 +2095,7 @@ document.addEventListener('click', async (e) => {
     if (!url.startsWith('http')) url = 'https://' + url;
     await updateQuickLink(linkId, name, url);
     await renderQuickLinks();
+    if (wallpaperPanelOpen) await renderWallpaperPanel();
     showToast(`Updated ${name}`);
   }
 });
