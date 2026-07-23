@@ -1527,7 +1527,7 @@ body.has-wallpaper .quick-link-name {
   z-index: 9998;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
 }
 
 .settings-overlay.open {
@@ -1547,7 +1547,7 @@ body.has-wallpaper .quick-link-name {
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .settings-drawer.open {
@@ -1842,4 +1842,96 @@ body.has-wallpaper .settings-drawer {
   color: var(--muted, #999);
   padding: 16px 0;
   text-align: center;
+}
+.drawer-section.active {
+  animation: drawerFadeIn 0.25s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes drawerFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Drawer link item hover — smooth */
+.drawer-link-item {
+  transition: background 0.2s cubic-bezier(0.32, 0.72, 0, 1), transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.drawer-link-item:hover {
+  transform: translateX(2px);
+}
+
+/* Inline edit form — smooth expand */
+.drawer-link-edit-form {
+  animation: formExpand 0.2s cubic-bezier(0.32, 0.72, 0, 1) both;
+  overflow: hidden;
+}
+
+@keyframes formExpand {
+  from { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to { opacity: 1; max-height: 200px; }
+}
+
+/* Drawer nav item — underline slide */
+.drawer-nav-item {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.drawer-nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-amber, #c8713a);
+  transform: scaleX(0);
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  transform-origin: center;
+}
+
+.drawer-nav-item.active::after {
+  transform: scaleX(1);
+}
+
+/* Buttons — micro interaction */
+.drawer-btn {
+  transition: all 0.18s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.drawer-btn:active {
+  transform: scale(0.96);
+}
+
+.drawer-btn-secondary:active {
+  transform: scale(0.96);
+}
+
+/* Wallpaper preset — smoother */
+.wallpaper-preset {
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Drawer close button */
+.drawer-close {
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.drawer-close:active {
+  transform: rotate(90deg);
+}
+
+/* Link buttons */
+.drawer-link-btn {
+  transition: all 0.18s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.drawer-link-btn:active {
+  transform: scale(0.9);
+}
+
+/* Toast — smoother */
+.toast.visible {
+  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 }

@@ -1302,16 +1302,20 @@ function handleCloseSettingsDrawer() {
   closeSettingsDrawer();
 }
 
-async function handleAddQuickLink() {
-  const name = prompt('Site name:');
-  if (!name) return;
-  let url = prompt('URL:', 'https://');
-  if (!url) return;
-  if (!url.startsWith('http')) url = 'https://' + url;
-  await addQuickLink(name, url);
-  await renderQuickLinks();
-  if (settingsDrawerOpen) await renderSettingsDrawer();
-  showToast(`Added ${name}`);
+function handleAddQuickLink() {
+  const list = document.getElementById('drawerLinksList');
+  if (!list) return;
+  // Check if form already open
+  if (list.querySelector('.drawer-link-edit-form[data-edit-id="new"]')) return;
+  const form = document.createElement('div');
+  form.innerHTML = renderInlineEditForm('new', '', 'https://');
+  form.firstElementChild.dataset.editId = 'new';
+  list.prepend(form.firstElementChild);
+  // Focus the name input
+  setTimeout(() => {
+    const nameInput = list.querySelector('.drawer-link-edit-form[data-edit-id="new"] .edit-name');
+    if (nameInput) nameInput.focus();
+  }, 50);
 }
 
 async function handleImportBookmarks() {
@@ -1360,10 +1364,15 @@ async function handleSaveInlineEdit(actionEl) {
   let url = urlInput.value.trim();
   if (!name || !url) return;
   if (!url.startsWith('http')) url = 'https://' + url;
-  await updateQuickLink(linkId, name, url);
+  if (linkId === 'new') {
+    await addQuickLink(name, url);
+    showToast(`Added ${name}`);
+  } else {
+    await updateQuickLink(linkId, name, url);
+    showToast(`Updated ${name}`);
+  }
   await renderQuickLinks();
   if (settingsDrawerOpen) await renderSettingsDrawer();
-  showToast(`Updated ${name}`);
 }
 
 /* --- Action map: data-action → handler --- */
