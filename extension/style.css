@@ -742,57 +742,21 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
    ================================================================ */
 
 .missions-empty-state {
-  /* Takes the full width — spans all columns */
   column-span: all;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-
-  padding: 56px 24px;
+  gap: 8px;
+  padding: 64px 24px;
   text-align: center;
-
   animation: fadeUp 0.5s ease both;
-}
-
-/* CSS-drawn checkmark in a glowing circle */
-.empty-checkmark {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(90, 122, 98, 0.1);
-  border: 1.5px solid rgba(90, 122, 98, 0.3);
-
-  /* Soft sage glow */
-  box-shadow: 0 0 0 8px rgba(90, 122, 98, 0.05),
-              0 0 0 16px rgba(90, 122, 98, 0.03);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Pop in with a gentle scale animation */
-  animation: checkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-}
-
-.empty-checkmark svg {
-  width: 26px;
-  height: 26px;
-  color: var(--accent-sage);
-  stroke-width: 2.5;
-}
-
-@keyframes checkPop {
-  from { transform: scale(0.6); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
 }
 
 .empty-title {
   font-family: 'Newsreader', serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 300;
   font-style: italic;
   color: var(--ink);
   letter-spacing: -0.3px;
@@ -802,7 +766,17 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   font-size: 13px;
   color: var(--muted);
   font-weight: 400;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+}
+
+/* Wallpaper mode: adapt empty state text color */
+body.has-wallpaper .empty-title {
+  color: var(--card-tint-text, rgba(255, 255, 255, 0.95)) !important;
+  text-shadow: var(--card-text-shadow, 0 1px 4px rgba(0,0,0,0.3));
+}
+
+body.has-wallpaper .empty-subtitle {
+  color: var(--card-tint-text, rgba(255, 255, 255, 0.7)) !important;
 }
 
 
