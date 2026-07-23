@@ -3,57 +3,42 @@
 > 基于 [Tab Out](https://github.com/zarazhangrui/tab-out) 的增强版 Chrome 新标签页扩展。
 > 原作者：[Zara](https://x.com/zarazhangrui) · 二创增强：[Gabi](https://github.com/Gabyran)
 
-A Chrome new tab extension built on top of [Tab Out](https://github.com/zarazhangrui/tab-out) with wallpaper support, quick links, and more.
-Original by [Zara](https://x.com/zarazhangrui) · Enhanced by [Gabi](https://github.com/Gabyran)
+**[English](./README_EN.md)** | 中文
 
 ---
 
-## What's New / 新增功能
+## ✨ 功能一览
 
-In addition to all original Tab Out features, this fork adds:
+### 🖼️ 壁纸系统
 
-在保留 Tab Out 全部功能的基础上，新增：
+- **预设壁纸** — 精选 Unsplash 风景图（山脉、海洋、森林、日落、极光…）
+- **自定义链接** — 粘贴任意图片 URL 作为壁纸
+- **本地上传** — 从设备中选择图片
+- **智能配色** — 卡片颜色自动跟随壁纸主色调，文字明暗自适应
 
-### 🖼️ Custom Wallpapers / 自定义壁纸
+### 🔗 快捷网址栏
 
-- **Preset wallpapers** — curated Unsplash photos (mountain, ocean, forest, sunset, night sky, aurora…)
-- **Custom URL** — paste any image URL as wallpaper
-- **Local upload** — select an image from your device
-- **Auto-theming** — card colors automatically adapt to the wallpaper's dominant color
-- **Smart text** — text color switches between light/dark based on wallpaper luminance
+- 显示网站 favicon + 名称，一键打开
+- 点击右上角 ⚙️ 打开设置面板，在 **Quick Links** 标签页管理：
+  - **添加** — 底部展开内联表单，填写名称和 URL
+  - **编辑** — 点击 ✏️ 在条目下方展开编辑表单
+  - **删除** — 点击 ✕ 直接删除
+  - **导入书签** — 一键导入 Chrome 所有书签，自动去重
+- 数据存储在 `chrome.storage.local`，完全本地，不上传
 
-预设壁纸（精选 Unsplash 风景图）、自定义 URL、本地图片上传。卡片颜色自动跟随壁纸主色调变化，文字颜色根据亮度自动切换深/浅色。
+### 🗂️ 标签页管理（继承自 Tab Out）
 
-### 🔗 Quick Links Bar / 常用网址栏
-
-- Vertical bookmark bar with favicon + site name + URL
-- Add / edit / delete links directly in the UI
-- Hover to reveal edit controls
-- Data stored in `chrome.storage.local`, fully local
-
-竖排快捷网址栏，显示 favicon + 站名 + URL。支持在界面中直接添加、编辑、删除。数据存在本地，不上传。
-
-### 🧩 Subdomain Merging / 子域名合并
-
-- Tabs from the same parent domain (e.g. `space.bilibili.com` + `www.bilibili.com`) are automatically grouped under one card
-
-同一个主域名下的不同子域名 tab 自动合并为一组（例如 `space.bilibili.com` + `www.bilibili.com` → 一个 Bilibili 卡片）。
+- **一览全局** — 所有打开的标签页按域名分组，网格卡片展示
+- **首页归组** — Gmail、X、LinkedIn、YouTube、GitHub 首页自动归入同一组
+- **子域名合并** — 同一主域名的子域名自动合并（如 `space.bilibili.com` + `www.bilibili.com` → 一个 Bilibili 卡片）
+- **一键关闭** — 按域名批量关闭，带音效 + 彩纸动画 🎉
+- **重复检测** — 自动标记重复打开的标签页，一键清理
+- **跨窗口跳转** — 点击任意标签页直接切换
+- **稍后查看** — 把标签页存入清单，关掉以后再看
 
 ---
 
-## Original Features (from Tab Out) / 原有功能
-
-- **See all tabs at a glance** — grouped by domain on a clean grid
-- **Homepages group** — Gmail, X, LinkedIn, YouTube, GitHub homepages pulled into one card
-- **Close tabs with style** — swoosh sound + confetti burst
-- **Duplicate detection** — flags same-page tabs with one-click cleanup
-- **Click to jump** — switch to any tab across windows
-- **Save for later** — bookmark tabs to a checklist before closing
-- **100% local** — no server, no account, no data leaves your machine
-
----
-
-## Install / 安装
+## 📦 安装
 
 ### Chrome
 
@@ -61,64 +46,73 @@ In addition to all original Tab Out features, this fork adds:
 git clone https://github.com/Gabyran/More-than-tab-out.git
 ```
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode** (top-right toggle)
-3. Click **Load unpacked**
-4. Select the `extension/` folder inside the cloned repo
-5. Open a new tab — you're done!
+1. 打开 `chrome://extensions`
+2. 开启右上角 **开发者模式**
+3. 点击 **加载已解压的扩展程序**
+4. 选择克隆目录下的 `extension/` 文件夹
+5. 打开新标签页 — 完成！
 
 ### Microsoft Edge
 
-```bash
-git clone https://github.com/Gabyran/More-than-tab-out.git
+1. 打开 `edge://extensions`
+2. 开启左侧 **开发者模式**
+3. 点击 **加载解压缩的扩展**
+4. 选择 `extension/` 文件夹
+5. 打开新标签页 — 完成！
+
+> 💡 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 下载 zip 包，解压后加载。
+
+---
+
+## 🛠️ 技术栈
+
+| 组件 | 技术 |
+|------|------|
+| 扩展标准 | Chrome / Edge Manifest V3 |
+| 数据存储 | `chrome.storage.local`（完全本地） |
+| 壁纸配色 | Canvas 像素采样 + 亮度分析 |
+| 音效 | Web Audio API 合成（无音频文件） |
+| 动画 | CSS transitions + JS 彩纸粒子 |
+| 依赖 | 零依赖 — 纯 HTML / CSS / JS |
+
+### 代码架构
+
+```
+extension/
+├── manifest.json     # 扩展配置（权限：tabs, storage, bookmarks）
+├── index.html        # 页面骨架
+├── style.css         # 全部样式
+└── app.js            # 主逻辑（9 个分区）
+    ├── 1. UTILITIES      — escapeHtml, 时间格式化, 问候语
+    ├── 2. CONSTANTS      — 域名映射表, 图标, 壁纸预设, 默认快捷链接
+    ├── 3. STATE          — 运行时状态变量
+    ├── 4. CHROME APIs    — tabs, bookmarks, storage 封装
+    ├── 5. DOMAIN HELPERS  — 标题清理, 友好域名, 分组逻辑
+    ├── 6. UI HELPERS     — 音效, 彩纸, Toast, 动画
+    ├── 7. RENDERERS      — 卡片, 标签页, 快捷链接, 设置面板
+    ├── 8. EVENT DISPATCH — 统一事件分发（ACTION_MAP）
+    └── 9. INIT           — 启动流程
 ```
 
-1. Open `edge://extensions`
-2. Enable **Developer mode** (left sidebar toggle)
-3. Click **Load unpacked**
-4. Select the `extension/` folder inside the cloned repo
-5. Open a new tab — done!
+---
 
-> 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 页面下载 `more-than-tab-out-v*.zip`，解压后加载。
->
-> You can also download the zip from [Releases](https://github.com/Gabyran/More-than-tab-out/releases) and load the unpacked folder.
+## 👥 贡献者
+
+| | 谁 | 做了什么 |
+|---|------|----------|
+| 🎨 | [Zara](https://x.com/zarazhangrui) | [Tab Out](https://github.com/zarazhangrui/tab-out) 原作者，标签页管理和温暖设计风格 |
+| ✨ | [Gabi](https://github.com/Gabyran) | 壁纸系统、快捷网址栏、子域名合并、书签导入、设置面板重构 |
 
 ---
 
-## Tech Stack / 技术栈
+## 📄 致谢
 
-| Component | Tech |
-|-----------|------|
-| Extension | Chrome / Edge Manifest V3 |
-| Storage | `chrome.storage.local` |
-| Wallpaper | CSS `background-image` + Canvas color extraction |
-| Sound | Web Audio API (synthesized) |
-| Animations | CSS transitions + JS confetti |
-| Dependencies | Zero — pure HTML/CSS/JS |
+- **[Tab Out](https://github.com/zarazhangrui/tab-out)** — 原始扩展，所有标签页管理逻辑和设计版权归 Zara
+- **[Unsplash](https://unsplash.com)** — 预设壁纸图片来源
+- **[Google S2](https://www.google.com/s2/favicons)** — Favicon 服务
 
 ---
 
-## Contributors / 贡献者
+## 📝 许可证
 
-| | Who | Role |
-|---|-----|------|
-| 🎨 | [Zara](https://x.com/zarazhangrui) ([@zarazhangrui](https://github.com/zarazhangrui)) | Original creator of [Tab Out](https://github.com/zarazhangrui/tab-out) |
-| ✨ | [Gabi](https://github.com/Gabyran) ([@Gabyran](https://github.com/Gabyran)) | Wallpaper system, quick links, subdomain merging, enhancements |
-
----
-
-## Credits / 致谢
-
-- **[Tab Out](https://github.com/zarazhangrui/tab-out)** by [Zara](https://x.com/zarazhangrui) — the original extension with tab management, domain grouping, and the beautiful warm design
-- **Wallpaper presets** from [Unsplash](https://unsplash.com)
-- **Favicon service** from [Google S2](https://www.google.com/s2/favicons)
-
-This project is a fork. All original tab management logic and design credit goes to Zara. The wallpaper system, quick links bar, and subdomain merging are additions by Gabi.
-
-本项目是 Fork。所有原始的 tab 管理逻辑和设计版权归 Zara 所有。壁纸系统、快捷网址栏和子域名合并功能为 Gabi 新增。
-
----
-
-## License / 许可证
-
-MIT — same as the original [Tab Out](https://github.com/zarazhangrui/tab-out).
+MIT — 与原项目 [Tab Out](https://github.com/zarazhangrui/tab-out) 一致。
