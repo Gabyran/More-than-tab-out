@@ -1305,17 +1305,20 @@ function handleCloseSettingsDrawer() {
 function handleAddQuickLink() {
   const list = document.getElementById('drawerLinksList');
   if (!list) return;
-  // Check if form already open
-  if (list.querySelector('.drawer-link-edit-form[data-edit-id="new"]')) return;
-  const form = document.createElement('div');
-  form.innerHTML = renderInlineEditForm('new', '', 'https://');
-  form.firstElementChild.dataset.editId = 'new';
-  list.prepend(form.firstElementChild);
-  // Focus the name input
+  // Remove any existing add form
+  const existing = list.querySelector('.drawer-link-edit-form[data-edit-id="new"]');
+  if (existing) existing.remove();
+  // Append form at the end of the list
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = renderInlineEditForm('new', '', 'https://');
+  const formEl = wrapper.firstElementChild;
+  list.appendChild(formEl);
+  // Scroll to bottom + focus
   setTimeout(() => {
-    const nameInput = list.querySelector('.drawer-link-edit-form[data-edit-id="new"] .edit-name');
+    formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const nameInput = formEl.querySelector('.edit-name');
     if (nameInput) nameInput.focus();
-  }, 50);
+  }, 100);
 }
 
 async function handleImportBookmarks() {
@@ -1335,7 +1338,17 @@ async function handleInlineEditLink(actionEl) {
   if (!link) return;
   const item = actionEl.closest('.drawer-link-item');
   if (!item) return;
-  item.outerHTML = renderInlineEditForm(linkId, link.name, link.url);
+  // Hide the item and insert form after it
+  item.style.display = 'none';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = renderInlineEditForm(linkId, link.name, link.url);
+  const formEl = wrapper.firstElementChild;
+  item.after(formEl);
+  setTimeout(() => {
+    formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const nameInput = formEl.querySelector('.edit-name');
+    if (nameInput) nameInput.focus();
+  }, 100);
 }
 
 async function handleInlineDeleteLink(actionEl) {
@@ -1350,7 +1363,15 @@ async function handleInlineDeleteLink(actionEl) {
 }
 
 function handleCancelInlineEdit(actionEl) {
-  if (settingsDrawerOpen) renderSettingsDrawer();
+  const form = actionEl.closest('.drawer-link-edit-form');
+  if (!form) return;
+  const linkId = form.dataset.editId;
+  // Remove the form
+  form.remove();
+  if (linkId === 'new') return;
+  // Restore the hidden item
+  const item = document.querySelector(`.drawer-link-item[data-link-id="${linkId}"]`);
+  if (item) item.style.display = '';
 }
 
 async function handleSaveInlineEdit(actionEl) {
