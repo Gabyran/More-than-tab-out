@@ -1823,33 +1823,18 @@ async function renderQuickLinks() {
   const links = await getQuickLinks();
 
   const linksHtml = links.map(link => {
-    const faviconUrl = (() => {
-      try {
-        const hostname = new URL(link.url).hostname;
-        return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
-      } catch { return ''; }
-    })();
-
-    // Multi-layer fallback: Google → site /favicon.ico → site /favicon.png → letter
-    const fallbackIco = (() => {
-      try { return `https://${new URL(link.url).hostname}/favicon.ico`; }
-      catch { return ''; }
-    })();
-    const fallbackPng = (() => {
-      try { return `https://${new URL(link.url).hostname}/favicon.png`; }
-      catch { return ''; }
-    })();
-
-    const onerrorHandler = `this.onerror=null;
-      ${fallbackIco ? `this.src='${fallbackIco}';this.onerror=null;` : ''}
-      ${fallbackPng ? `if(!this.complete||this.naturalWidth===0)this.src='${fallbackPng}';this.onerror=null;` : ''}
-      if(!this.complete||this.naturalWidth===0){this.style.display='none';this.nextElementSibling.style.display='flex'}`;
+    let faviconUrl = '';
+    let hostname = '';
+    try {
+      hostname = new URL(link.url).hostname;
+      faviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
+    } catch {}
 
     return `
       <a class="quick-link" href="${link.url}" target="_blank" rel="noopener"
          data-link-id="${link.id}" data-link-name="${link.name}" data-link-url="${link.url}"
          title="${link.name}">
-        <img class="quick-link-favicon" src="${faviconUrl}" alt="" onerror="${onerrorHandler}">
+        <img class="quick-link-favicon" src="${faviconUrl}" alt="" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
         <span class="quick-link-fallback" style="display:none">${link.name.charAt(0).toUpperCase()}</span>
         <span class="quick-link-name">${link.name}</span>
         <button class="quick-link-edit" data-action="edit-quick-link" data-link-id="${link.id}" title="Edit">
