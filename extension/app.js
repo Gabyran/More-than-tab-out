@@ -295,7 +295,7 @@ async function dismissSavedTab(id) {
    null = no wallpaper (default paper background)
    ---------------------------------------------------------------- */
 
-const DEFAULT_WALLPAPER = null;
+const DEFAULT_WALLPAPER = { type: 'preset', value: PRESET_WALLPAPERS[1].url };
 
 /** Get current wallpaper config */
 async function getWallpaper() {
