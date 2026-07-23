@@ -1837,9 +1837,6 @@ async function renderQuickLinks() {
         <img class="quick-link-favicon" src="${faviconUrl}" alt="" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
         <span class="quick-link-fallback" style="display:none">${link.name.charAt(0).toUpperCase()}</span>
         <span class="quick-link-name">${link.name}</span>
-        <button class="quick-link-edit" data-action="edit-quick-link" data-link-id="${link.id}" title="Edit">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
-        </button>
       </a>`;
   }).join('');
 
@@ -1918,7 +1915,7 @@ async function renderWallpaperPanel() {
       catch { return ''; }
     })();
     return `
-      <div class="panel-link-item" data-link-id="${link.id}">
+      <div class="panel-link-item" data-link-id="${link.id}" data-link-name="${link.name}" data-link-url="${link.url}">
         <img src="${faviconUrl}" alt="" class="panel-link-favicon" onerror="this.style.display='none'">
         <span class="panel-link-name">${link.name}</span>
         <button class="panel-link-edit" data-action="edit-quick-link" data-link-id="${link.id}" title="Edit / Delete">
@@ -2078,10 +2075,20 @@ document.addEventListener('click', async (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  const linkEl = editBtn.closest('.quick-link');
   const linkId = editBtn.dataset.linkId;
+  // Find link data from either quick-link bar or settings panel
+  const linkEl = editBtn.closest('.quick-link') || editBtn.closest('.panel-link-item');
   const currentName = linkEl?.dataset.linkName || '';
   const currentUrl = linkEl?.dataset.linkUrl || '';
+
+  // Fallback: if no data attributes, look up from storage
+  let name = currentName;
+  let url = currentUrl;
+  if (!name || !url) {
+    const links = await getQuickLinks();
+    const link = links.find(l => l.id === linkId);
+    if (link) { name = link.name; url = link.url; }
+  }
 
   const action = prompt(`Edit "${currentName}":\n1 = Edit\n2 = Delete\nCancel = Do nothing`, '1');
   if (action === '2') {
