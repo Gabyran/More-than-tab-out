@@ -2,34 +2,29 @@
 
 > 基于 [Tab Out](https://github.com/zarazhangrui/tab-out) 的增强版 Chrome 新标签页扩展。
 > 原作者：[Zara](https://x.com/zarazhangrui) · 二创增强：[Gabi](https://github.com/Gabyran)
-
+（那会还不会 fork， 所以就这样标注一下原作者啦）
 **[English](./README_EN.md)** | 中文
 
 ---
 
-## ✨ 功能一览
+## 功能一览
 
-### 🖼️ 壁纸系统
+### 壁纸系统
 
 - **预设壁纸** — 精选 Unsplash 风景图（山脉、海洋、森林、日落、极光…）
-- **自定义链接** — 粘贴任意图片 URL 作为壁纸
-- **本地上传** — 从设备中选择图片
-- **智能配色** — 卡片颜色自动跟随壁纸主色调，文字明暗自适应
+- **自定义壁纸** — 粘贴任意图片 URL ，或者直接上传本地图片即可
+- **智能配色** — 卡片颜色自动跟随壁纸主色调，实现半透明一体的效果。文字明暗自适应，不会看不清啦
 
-### 🔗 快捷网址栏
+### 书签
 
-- 显示网站 favicon + 名称，一键打开
-- 点击右上角 ⚙️ 打开设置面板，在 **Quick Links** 标签页管理：
-  - **添加** — 底部展开内联表单，填写名称和 URL
-  - **编辑** — 点击 ✏️ 在条目下方展开编辑表单
-  - **删除** — 点击 ✕ 直接删除
-  - **导入书签** — 一键导入 Chrome 所有书签，自动去重
+- 把你的 chorme 书签用大图标展示，点击即跳转
+- 导入书签 — 一键导入 Chrome 所有书签，自动去重
+- 点击右上角打开设置面板，在 **Quick Links** 管理你的标签页：
 - 数据存储在 `chrome.storage.local`，完全本地，不上传
 
-### 🗂️ 标签页管理（继承自 Tab Out）
+### 标签页管理（继承自 Tab Out）
 
 - **一览全局** — 所有打开的标签页按域名分组，网格卡片展示
-- **首页归组** — Gmail、X、LinkedIn、YouTube、GitHub 首页自动归入同一组
 - **子域名合并** — 同一主域名的子域名自动合并（如 `space.bilibili.com` + `www.bilibili.com` → 一个 Bilibili 卡片）
 - **一键关闭** — 按域名批量关闭，带音效 + 彩纸动画 🎉
 - **重复检测** — 自动标记重复打开的标签页，一键清理
@@ -38,7 +33,7 @@
 
 ---
 
-## 📦 安装
+## 安装
 
 ### Chrome
 
@@ -60,25 +55,16 @@ git clone https://github.com/Gabyran/More-than-tab-out.git
 4. 选择 `extension/` 文件夹
 5. 打开新标签页 — 完成！
 
-> 💡 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 下载 zip 包，解压后加载。
+> 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 下载 zip 包，解压后加载。
 
-### Dia Browser
-
-1. 打开 `dia://extensions`
-2. 开启 **开发者模式**
-3. 点击 **加载已解压的扩展程序**
-4. 选择 `extension/` 文件夹
-5. 打开新标签页 — 完成！
-
-> 💡 Dia 基于 Chromium 架构，完全兼容 Manifest V3 扩展。安装方式与 Chrome 一致。
 
 ---
 
-## 🛠️ 技术栈
+## 技术栈
 
 | 组件 | 技术 |
 |------|------|
-| 扩展标准 | Chrome / Edge / Dia Manifest V3 |
+| 扩展标准 | Chrome / Edge |
 | 数据存储 | `chrome.storage.local`（完全本地） |
 | 壁纸配色 | Canvas 像素采样 + 亮度分析 |
 | 音效 | Web Audio API 合成（无音频文件） |
@@ -106,16 +92,16 @@ extension/
 
 ---
 
-## 👥 贡献者
+## 贡献者
 
 | | 谁 | 做了什么 |
 |---|------|----------|
-| 🎨 | [Zara](https://x.com/zarazhangrui) | [Tab Out](https://github.com/zarazhangrui/tab-out) 原作者，标签页管理和温暖设计风格 |
-| ✨ | [Gabi](https://github.com/Gabyran) | 壁纸系统、快捷网址栏、子域名合并、书签导入、设置面板重构、Dia 浏览器适配 |
+|  [Zara](https://x.com/zarazhangrui) | [Tab Out](https://github.com/zarazhangrui/tab-out) 原作者，标签页管理和温暖设计风格 |
+|  [Gabi](https://github.com/Gabyran) | 壁纸系统、快捷网址栏、子域名合并、书签导入、设置面板重构 |
 
 ---
 
-## 📄 致谢
+## 致谢
 
 - **[Tab Out](https://github.com/zarazhangrui/tab-out)** — 原始扩展，所有标签页管理逻辑和设计版权归 Zara
 - **[Unsplash](https://unsplash.com)** — 预设壁纸图片来源
@@ -123,6 +109,6 @@ extension/
 
 ---
 
-## 📝 许可证
+## 许可证
 
 MIT — 与原项目 [Tab Out](https://github.com/zarazhangrui/tab-out) 一致。
