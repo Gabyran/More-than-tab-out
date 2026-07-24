@@ -218,7 +218,7 @@ async function fetchOpenTabs() {
     openTabs = tabs.map(t => ({
       id: t.id, url: t.url, title: t.title,
       windowId: t.windowId, active: t.active,
-      isTabOut: t.url === newtabUrl || t.url === 'chrome://newtab/',
+      isTabOut: t.url === newtabUrl || t.url === 'chrome://newtab/' || t.url === 'dia://newtab/',
     }));
   } catch { openTabs = []; }
 }
@@ -291,7 +291,7 @@ async function closeTabOutDupes() {
   const newtabUrl = `chrome-extension://${extensionId}/index.html`;
   const allTabs = await chrome.tabs.query({});
   const currentWindow = await chrome.windows.getCurrent();
-  const tabOutTabs = allTabs.filter(t => t.url === newtabUrl || t.url === 'chrome://newtab/');
+  const tabOutTabs = allTabs.filter(t => t.url === newtabUrl || t.url === 'chrome://newtab/' || t.url === 'dia://newtab/');
   if (tabOutTabs.length <= 1) return;
   const keep = tabOutTabs.find(t => t.active && t.windowId === currentWindow.id)
     || tabOutTabs.find(t => t.active) || tabOutTabs[0];
@@ -576,7 +576,8 @@ function getRealTabs() {
   return openTabs.filter(t => {
     const url = t.url || '';
     return !url.startsWith('chrome://') && !url.startsWith('chrome-extension://')
-      && !url.startsWith('about:') && !url.startsWith('edge://') && !url.startsWith('brave://');
+      && !url.startsWith('about:') && !url.startsWith('edge://') && !url.startsWith('brave://')
+      && !url.startsWith('dia://');
   });
 }
 
@@ -1268,7 +1269,7 @@ async function handleDedupKeepOne(actionEl) {
 }
 
 async function handleCloseAllOpenTabs() {
-  const allUrls = openTabs.filter(t => t.url && !t.url.startsWith('chrome') && !t.url.startsWith('about:')).map(t => t.url);
+  const allUrls = openTabs.filter(t => t.url && !t.url.startsWith('chrome') && !t.url.startsWith('about:') && !t.url.startsWith('dia:')).map(t => t.url);
   await closeTabsByUrls(allUrls);
   playCloseSound();
   document.querySelectorAll('#openTabsMissions .mission-card').forEach(c => {

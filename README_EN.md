@@ -62,13 +62,23 @@ git clone https://github.com/Gabyran/More-than-tab-out.git
 
 > 💡 You can also download the zip from [Releases](https://github.com/Gabyran/More-than-tab-out/releases) and load the unpacked folder.
 
+### Dia Browser
+
+1. Open `dia://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Select the `extension/` folder
+5. Open a new tab — done!
+
+> 💡 Dia is built on Chromium and fully supports Manifest V3 extensions. Installation is identical to Chrome.
+
 ---
 
 ## 🛠️ Tech Stack
 
 | Component | Tech |
 |-----------|------|
-| Extension | Chrome / Edge Manifest V3 |
+| Extension | Chrome / Edge / Dia Manifest V3 |
 | Storage | `chrome.storage.local` (fully local) |
 | Wallpaper theming | Canvas pixel sampling + luminance analysis |
 | Sound | Web Audio API (synthesized, no audio files) |
@@ -101,7 +111,7 @@ extension/
 | | Who | What they did |
 |---|------|----------|
 | 🎨 | [Zara](https://x.com/zarazhangrui) | Original creator of [Tab Out](https://github.com/zarazhangrui/tab-out), tab management and warm design style |
-| ✨ | [Gabi](https://github.com/Gabyran) | Wallpaper system, quick links bar, subdomain merging, bookmark import, settings drawer refactor |
+| ✨ | [Gabi](https://github.com/Gabyran) | Wallpaper system, quick links bar, subdomain merging, bookmark import, settings drawer refactor, Dia browser support |
 
 ---
 

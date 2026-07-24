@@ -62,13 +62,23 @@ git clone https://github.com/Gabyran/More-than-tab-out.git
 
 > 💡 也可以从 [Releases](https://github.com/Gabyran/More-than-tab-out/releases) 下载 zip 包，解压后加载。
 
+### Dia Browser
+
+1. 打开 `dia://extensions`
+2. 开启 **开发者模式**
+3. 点击 **加载已解压的扩展程序**
+4. 选择 `extension/` 文件夹
+5. 打开新标签页 — 完成！
+
+> 💡 Dia 基于 Chromium 架构，完全兼容 Manifest V3 扩展。安装方式与 Chrome 一致。
+
 ---
 
 ## 🛠️ 技术栈
 
 | 组件 | 技术 |
 |------|------|
-| 扩展标准 | Chrome / Edge Manifest V3 |
+| 扩展标准 | Chrome / Edge / Dia Manifest V3 |
 | 数据存储 | `chrome.storage.local`（完全本地） |
 | 壁纸配色 | Canvas 像素采样 + 亮度分析 |
 | 音效 | Web Audio API 合成（无音频文件） |
@@ -101,7 +111,7 @@ extension/
 | | 谁 | 做了什么 |
 |---|------|----------|
 | 🎨 | [Zara](https://x.com/zarazhangrui) | [Tab Out](https://github.com/zarazhangrui/tab-out) 原作者，标签页管理和温暖设计风格 |
-| ✨ | [Gabi](https://github.com/Gabyran) | 壁纸系统、快捷网址栏、子域名合并、书签导入、设置面板重构 |
+| ✨ | [Gabi](https://github.com/Gabyran) | 壁纸系统、快捷网址栏、子域名合并、书签导入、设置面板重构、Dia 浏览器适配 |
 
 ---
 
